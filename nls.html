@@ -2,19 +2,50 @@
 <html>
 <head>
 	<title>FENL Bookmarklet</title>
+	<style>
+	.bookmarklet {
+		display: block;
+	}
+	</style>
 </head>
 <body>
 	<script>
 	var username = prompt('Enter your name (ex. Ben)');
-	while (!username || username === '')
+
+	var formURLs = [
+		{
+			url: 'https://docs.google.com/a/knowlabs.com/forms/d/1S9slDNFNuDimMZTBAV3t1YAMxUfKF8POe8qZ_up7gRc/',
+			name: 'Add to the Front End Newsletter',
+			queryNameURL: 'entry.1072683487',
+			queryNameTitle: 'entry.154556332'
+		},
+		{
+			url: 'https://docs.google.com/a/knowlabs.com/forms/d/1ntYXYD_Hl9hFyChmjuqYOrIInxMXQnT84ygMxaPDffU/',
+			name: 'Add to the Data Analyst Newsletter',
+			queryNameURL: 'entry.272718754',
+			queryNameTitle: 'entry.1214524442'
+		}
+	];
+
+
+
+	while (!username || username === ''){
 		username = prompt('Nice try... Please enter your name.\n\nThis will let the bookmarklet auto-fill your name, so you don\'t have to type it in every time.');
+	}
 	</script>
 	<h3>Choose whichever bookmarklet applies to you, and click and drag it to your bookmarks bar:</h3>
-	<p><a id="foo1">Add To FENL</a> - <a id="foo2">Add To DANL</a></p>
+	<p id="bookmarkletList"></p>
 
 	<script>
-	document.getElementById('foo1').href = "javascript:void function(){window.open('https://docs.google.com/a/knowlabs.com/forms/d/1S9slDNFNuDimMZTBAV3t1YAMxUfKF8POe8qZ_up7gRc/viewform%3Fentry.154556332='+encodeURIComponent(document.title)+'%26entry.1072683487='+encodeURIComponent(document.URL)+'%26entry.90901991='+encodeURIComponent('"+username+"'),'Add to the Front End Newsletter')}();";
-	document.getElementById('foo2').href = "javascript:void function(){window.open('https://docs.google.com/a/knowlabs.com/forms/d/1ntYXYD_Hl9hFyChmjuqYOrIInxMXQnT84ygMxaPDffU/viewform?entry.1214524442='+encodeURIComponent(document.title)+'%26entry.272718754='+encodeURIComponent(document.URL)+'%26entry.2099353836='+encodeURIComponent('"+username+"'),'Add to the Data Analyst Newsletter')}();";
+	formURLs.forEach(function(formURL, i){
+		var elem = document.createElement('a');
+		elem.classList.add('bookmarklet');
+		elem.href = "javascript:void function(){window.open('"+formURL.url+"viewform%3F"+formURL.queryNameTitle+"='+encodeURIComponent(document.title)+'%26"+formURL.queryNameURL+"='+encodeURIComponent(document.URL)+'%26entry.90901991='+encodeURIComponent('"+username+"'),'Add to the Front End Newsletter')}();";
+		elem.textContent = formURL.name
+		document.getElementById('bookmarkletList').appendChild(elem);
+		console.log(elem);
+	});
+	
 	</script>
 
 </body>
